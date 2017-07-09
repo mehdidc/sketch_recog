@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div><canvas id="sketch" style='border:1px solid black'></canvas><div>
+<script type="text/javascript">
+
+  $(function() {
+    var sketchpad = new Sketchpad({
+      element: '#sketch',
+      width: 200,
+      height: 200,
+      penSize: 10
+    });
+
+   $('#sketch').bind('mouseup', function() {
+      $.getJSON('/predict', {
+          img: document.querySelector('#sketch').toDataURL("image/png")
+      }, function(data) {
+        s = '';
+        for (var i = 0; i < 10; i++) {
+            name = data.names[i];
+            //name = name.substr(3)
+            //name = name.replace("'", "");
+            proba = data.probas[i];
+            s += '<p>'+ '$$' + name + ':' + proba + '$$' + '</p>';
+        }
+        s += '';
+        $('#predictions').html(s);
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+
+      });
+      return false;
+    });
+    $(document).ready(function(){
+        $("#clear").bind('click', function() {
+            sketchpad.clear(); 
+            $('#predictions').html('');
+        });
+    });
+  });
+</script>
+
+<div><a href="#" id="clear">Clear</a></div>
+<div id="predictions"></div>
+<div><a href="#sketch" data-download="png">Download</a></div>
+
+{% endblock %}
