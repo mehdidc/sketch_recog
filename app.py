@@ -14,7 +14,7 @@ import pandas as pd
 from machinepredict.interface import load
 from machinepredict.interface import predict as model_predict
 
-model_name = 'digits_and_letters'
+model_name = 'hwrt'
 
 if model_name == 'hwrt':
     model = load('models/hwrt')

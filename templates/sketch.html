@@ -17,15 +17,18 @@
       $.getJSON('/predict', {
           img: document.querySelector('#sketch').toDataURL("image/png")
       }, function(data) {
-        s = '';
+        s = '<table>';
+        s += '<tr><td>Symbol</td><td>latex</td><td>proba</td></tr>';
         for (var i = 0; i < 10; i++) {
             name = data.names[i];
-            //name = name.substr(3)
-            //name = name.replace("'", "");
             proba = data.probas[i];
-            s += '<p>'+ '$$' + name + ':' + proba + '$$' + '</p>';
+            s += '<tr>';
+            s += '<td>'+ '$$' + name + '$$' +'</td>';
+            s += '<td>' + name + '</td>';
+            s += '<td>' + proba + '</td>';
+            s += '</tr>';
         }
-        s += '';
+        s += '</table>';
         $('#predictions').html(s);
         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 
